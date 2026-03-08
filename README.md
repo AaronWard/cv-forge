@@ -1,4 +1,4 @@
-![CV Forge](_img/readme.png)
+![CV Forge](./_img/readme.png)
 
 # CV Forge
 

@@ -8,7 +8,6 @@ A professional, client-side CV/Resume builder with multiple templates, ATS optim
 
 - **Multiple Templates**: Choose from ATS-friendly, Modern, Creative, and Professional layouts.
 - **Real-time Preview**: See your changes instantly as you edit.
-- **AI Assistance**: Powered by Google Gemini to help write professional summaries and descriptions.
 - **ATS Optimization**: Templates designed to be parsed correctly by Applicant Tracking Systems.
 - **PDF Export**: High-quality PDF export for your applications.
 - **Local Storage**: Your data is saved automatically to your browser's local storage.
@@ -19,7 +18,6 @@ A professional, client-side CV/Resume builder with multiple templates, ATS optim
 - **Frontend**: React 18, TypeScript, Vite
 - **Styling**: Tailwind CSS
 - **Icons**: Lucide React
-- **AI**: Google Gemini API (@google/genai)
 - **PDF Generation**: html2pdf.js, react-to-print
 
 ## Getting Started

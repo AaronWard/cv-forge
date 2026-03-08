@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CV Forge - Professional Resume Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&family=Roboto+Mono:wght@400;500&display=swap');
+
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+
+      /* Print specific styles to hide UI and format page */
+      @media print {
+        @page {
+          margin: 0;
+          size: auto;
+        }
+        
+        body {
+          margin: 0;
+          padding: 0;
+          background: white;
+          color: black;
+        }
+
+        /* Hide UI elements */
+        .no-print, 
+        .app-header, 
+        .editor-sidebar, 
+        .preview-toolbar, 
+        .ai-settings-modal {
+          display: none !important;
+        }
+
+        /* Reset Layout Constraints */
+        html, body, #root, main {
+          height: auto !important;
+          overflow: visible !important;
+          width: 100% !important;
+          display: block !important;
+        }
+
+        /* Reset Preview Panel */
+        .preview-panel {
+          position: static !important;
+          width: 100% !important;
+          height: auto !important;
+          overflow: visible !important;
+          background: white !important;
+          padding: 0 !important;
+          display: block !important;
+        }
+
+        /* Reset Scaler */
+        .preview-scaler {
+          transform: none !important;
+          width: 100% !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          overflow: visible !important;
+        }
+
+        /* Print Container */
+        .print-container {
+          width: 100% !important;
+          max-width: 100% !important;
+          min-height: 0 !important;
+          margin: 0 !important;
+          box-shadow: none !important;
+          border: none !important;
+          page-break-after: auto;
+          position: relative !important;
+          left: auto !important;
+          top: auto !important;
+        }
+
+        /* Ensure background colors print */
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+      }
+
+      /* Custom scrollbar for editor */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 3px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #999;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "@google/genai": "https://esm.sh/@google/genai@^1.41.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>

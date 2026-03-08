@@ -207,7 +207,7 @@ const ResumeRenderer = ({ data, template }: { data: ResumeData; template: Templa
           {data.skills.map(skill => (
             <div key={skill.id} className="flex flex-col sm:flex-row sm:items-baseline gap-2">
               <span className={`${h3} w-32 shrink-0`}>{skill.name}:</span>
-              <span className={p}>{skill.items.join(', ')}</span>
+              <span className={p}>{skill.items.filter(s => s.trim().length > 0).join(', ')}</span>
             </div>
           ))}
         </div>
@@ -874,7 +874,7 @@ const App: React.FC = () => {
                     <TextAreaGroup label="Items (comma separated)" value={skill.items.join(', ')} rows={2} onChange={(v: string) => {
                       // Allow spaces in tags, split by comma
                       const list = [...resume.skills]; 
-                      list[idx].items = v.split(',').map(s => s.trim()).filter(s => s.length > 0); 
+                      list[idx].items = v.split(',').map(s => s.trim()); 
                       setResume({...resume, skills: list});
                     }} />
                   </div>

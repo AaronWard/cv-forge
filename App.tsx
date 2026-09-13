@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import html2pdf from 'html2pdf.js';
+import { useReactToPrint } from 'react-to-print';
 import { 
   FileText, Layout, Download, CheckCircle, AlertTriangle, 
   Settings, Save, Upload, Wand2, Plus, Trash2, GripVertical,
@@ -480,68 +480,40 @@ const App: React.FC = () => {
 
   const activeTemplate = TEMPLATES.find(t => t.id === templateId) || TEMPLATES[0];
 
-  const handlePrint = () => {
-    const element = printRef.current;
-    if (!element) {
-      console.error("Print element not found");
-      return;
-    }
-
-    setIsPrinting(true);
-    console.log("Starting PDF generation...");
-    
-    try {
-      // Clone the element to remove the "page break estimate" lines for the PDF
-      const clone = element.cloneNode(true) as HTMLElement;
-      const markers = clone.querySelectorAll('[title="Page Break Estimate"]');
-      markers.forEach(m => m.remove());
-
-      // Fix: Ensure the clone height is a multiple of A4 page height so background extends to the bottom
-      // We append the clone to the body (hidden) to get an accurate scrollHeight without the markers
-      clone.style.position = 'absolute';
-      clone.style.left = '-10000px';
-      clone.style.top = '0';
-      document.body.appendChild(clone);
-
-      // A4 aspect ratio is 210mm / 297mm = ~0.707
-      // We use the clientWidth to calculate the expected page height in pixels
-      const pageWidth = clone.clientWidth;
-      const pageHeight = pageWidth * (297 / 210); // A4 height in px based on width
-      
-      const contentHeight = clone.scrollHeight;
-      const totalPages = Math.ceil(contentHeight / pageHeight);
-      
-      // Set height to exactly the number of pages needed
-      const targetHeight = totalPages * pageHeight;
-      
-      // Apply the new height to the clone
-      clone.style.height = `${targetHeight}px`;
-      clone.style.minHeight = `${targetHeight}px`;
-
-      const opt = {
-        margin: 0,
-        filename: `${resume.title.replace(/\s+/g, '_') || 'resume'}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        enableLinks: true
-      };
-
-      html2pdf().set(opt).from(clone).save().then(() => {
-        console.log("PDF generated successfully");
-        document.body.removeChild(clone);
-        setIsPrinting(false);
-      }).catch((err: any) => {
-        console.error("PDF generation failed:", err);
-        document.body.removeChild(clone);
-        alert("PDF generation failed. Please check console for details.");
-        setIsPrinting(false);
-      });
-    } catch (err) {
-      console.error("Error in handlePrint:", err);
-      alert("An error occurred while generating PDF.");
+  const nativePrint = useReactToPrint({
+    contentRef: printRef,
+    documentTitle: resume.title.replace(/\s+/g, '_') || 'resume',
+    preserveAfterPrint: true,
+    pageStyle: `
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+  
+      @media print {
+        html,
+        body {
+          margin: 0 !important;
+          padding: 0 !important;
+          background: #ffffff !important;
+        }
+  
+        [title="Page Break Estimate"] {
+          display: none !important;
+        }
+      }
+    `,
+    onBeforePrint: async () => {
+      setIsPrinting(true);
+      await document.fonts.ready;
+    },
+    onAfterPrint: () => {
       setIsPrinting(false);
-    }
+    },
+  });
+  
+  const handlePrint = () => {
+    nativePrint();
   };
 
   const handleAI = async (text: string, fieldPath: string, type: 'fix' | 'professional' | 'shorten') => {
